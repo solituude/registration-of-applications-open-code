@@ -1,0 +1,42 @@
+li {
+    display: inline-block;
+    position: relative;
+    color: #fff;
+    font-family: sans-serif;
+    font-size: 20px;
+    cursor: pointer;
+    transition: 0.4s all ease;
+    font-family: 'Roboto', sans-serif;
+
+}
+
+li:hover{
+    color: #cdcdcd;
+    transition: 0.4s all ease;
+}
+
+li:after {
+    content: '';
+    position: absolute;
+    width: 100%;
+    transform: scaleX(0);
+    height: 2px;
+    bottom: -5px;
+    left: 0;
+    background-color: #0051ff;
+    transform-origin: bottom right;
+    transition: transform 0.5s ease-out;
+}
+
+li:hover::after {
+    transform: scaleX(1);
+    transform-origin: bottom left;
+}
+
+
+.list{
+    height: 100vh;
+    width: 100%;
+    margin: 20px auto;
+    background-color: #16233e;
+}
