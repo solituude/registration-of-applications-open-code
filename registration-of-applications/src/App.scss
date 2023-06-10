@@ -1,4 +1,14 @@
 .main__content {
   padding: 0 !important;
-  background: #F9FAFF;
+  background: var(--background-general);
+}
+
+:root{
+  &[data-theme="light"]{
+    --background-general: #F9FAFF;
+  }
+
+  &[data-theme="dark"]{
+    --background-general: #262C40;
+  }
 }
