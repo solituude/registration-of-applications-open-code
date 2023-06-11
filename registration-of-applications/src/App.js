@@ -1,4 +1,4 @@
-import './App.scss';
+import './App.sass';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Container } from "react-bootstrap";
 import {BrowserRouter, Route, Routes} from "react-router-dom";
