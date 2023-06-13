@@ -7,8 +7,17 @@ import {NavLink} from "react-router-dom";
 import lightThemeToggleIcon from '../../img/ligthThemeIcon.svg';
 import darkThemeToggleIcon from '../../img/darkThemeIcon.svg';
 import {ThemeContext, themes} from "../../contexts/ThemeContext";
+import {useDispatch, useSelector} from "react-redux";
+import {setCount} from "../../store/reducers/logReducer";
+import {Button} from "antd";
 
 const NavBar = () => {
+    const dispatch = useDispatch();
+    const count = useSelector(store => store.logPage.count);
+    const plusOne = (count) => {
+        dispatch(setCount(count + 5))
+    }
+
     return(
         <ThemeContext.Consumer>
             {({theme, setTheme}) => (
@@ -22,6 +31,8 @@ const NavBar = () => {
                     </button>
                     <NavLink to='/statement' className={s.nav__item}>Журнал</NavLink>
                     <NavLink to='/map' className={s.nav__item}>Карта</NavLink>
+
+
                 </Navbar>
             )}
         </ThemeContext.Consumer>

@@ -17,7 +17,7 @@ function App() {
                 <Route path='/' element={<Statement/>}/>
                 <Route path='/statement' element={<Statement/>}/>
                 <Route path='/statement/add' element={<StatementAdd />}/>
-                <Route path='/statement/edit' element={<StatementEdit/>}/>
+                {/*<Route path='/statement/edit/:id' element={<StatementEdit/>}/>*/}
                 <Route path='/map' element={<Map/>} />
             </Routes>
         </BrowserRouter>
