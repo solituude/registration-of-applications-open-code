@@ -2,24 +2,28 @@ import React, {useEffect, useState} from "react";
 import {Container, Table} from "react-bootstrap";
 import {Tag} from 'antd';
 import s from './statement.module.sass';
-import {Outlet, useLocation, useNavigate} from 'react-router';
+import {useLocation, useNavigate} from 'react-router';
 import {Spin} from 'antd';
 import StatementEdit from "../StatementEdit/StatementEdit";
 import {useDispatch, useSelector} from "react-redux";
-import {fetchTableDataAsync, setIsFetching} from "../../store/reducers/logReducer";
+import {fetchSliceData} from "../../store/reducers/logReducer";
+import TablePagination from "./Pagination";
 
 
 const Statement = () => {
-    // const [isLoading, setIsLoading] = useState(true);
-
     const dispatch = useDispatch();
+    const currentPage = useSelector(store => store.logPage.currentPage);
+    const currData = useSelector(store => store.logPage.currentData);
+
     useEffect(() => {
-        dispatch(fetchTableDataAsync());
+        dispatch(fetchSliceData(currentPage))
+        console.log(currentPage);
+    }, [currentPage, dispatch]);
 
-    }, [dispatch]);
-
-    const dataTable = useSelector(store => store.logPage.tableData);
+    // const dataTable = useSelector(store => store.logPage.tableData);
     const isLoading = useSelector(store => store.logPage.isFetching);
+    console.log(isLoading);
+    console.log(currData);
 
     const setColorTag = (priority) => {
         // eslint-disable-next-line default-case
@@ -47,7 +51,6 @@ const Statement = () => {
         {name: "Действия"},
     ]
 
-    // const [isLoading, setIsLoading] = useState(false);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const location = useLocation().pathname;
     const navigate = useNavigate();
@@ -74,7 +77,7 @@ const Statement = () => {
                         </thead>
 
                         <tbody>
-                        {dataTable.map((item, index) => (
+                        {currData.map((item, index) => (
                             <tr key={item.id} onClick={() => handleRowClick(item.id)}>
                                 <td className={s.table__item}>{item.id}</td>
                                 <td className={s.table__item}>{item.address}</td>
@@ -89,6 +92,7 @@ const Statement = () => {
                         </tbody>
                     </Table>
                     {location.includes(PATH_STATEMENT_EDIT) && <StatementEdit onClose={handleCloseModal}/>}
+                    <TablePagination/>
                 </>
             )}
 
