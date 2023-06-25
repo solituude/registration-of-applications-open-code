@@ -17,13 +17,11 @@ const Statement = () => {
 
     useEffect(() => {
         dispatch(fetchSliceData(currentPage))
-        console.log(currentPage);
+        // console.log(currentPage);
     }, [currentPage, dispatch]);
 
     // const dataTable = useSelector(store => store.logPage.tableData);
     const isLoading = useSelector(store => store.logPage.isFetching);
-    console.log(isLoading);
-    console.log(currData);
 
     const setColorTag = (priority) => {
         // eslint-disable-next-line default-case
@@ -55,20 +53,25 @@ const Statement = () => {
     const location = useLocation().pathname;
     const navigate = useNavigate();
 
-    const handleRowClick = (id) => {
+    const[dataEdit, setDataEdit] = useState({});
+
+    const handleRowClick = (id, item) => {
         setIsModalOpen(true);
         navigate(`/statement/edit/${id}`);
+        setDataEdit(item);
     };
 
     const handleCloseModal = () => {
         setIsModalOpen(false);
         navigate('/statement');
+        setDataEdit({});
     }
 
     return (
         <Container>
             {isLoading ? (<Spin className={s.loader}/>) : (
                 <>
+                    <h1 className={s.title}>Заявки</h1>
                     <Table className={s.table__content} hover>
                         <thead>
                         {headerTable.map(item => (
@@ -78,7 +81,7 @@ const Statement = () => {
 
                         <tbody>
                         {currData.map((item, index) => (
-                            <tr key={item.id} onClick={() => handleRowClick(item.id)}>
+                            <tr key={item.id} onClick={() => handleRowClick(item.id, item)}>
                                 <td className={s.table__item}>{item.id}</td>
                                 <td className={s.table__item}>{item.address}</td>
                                 <td className={s.table__item}>{item.accident}</td>
@@ -91,7 +94,9 @@ const Statement = () => {
                         ))}
                         </tbody>
                     </Table>
-                    {location.includes(PATH_STATEMENT_EDIT) && <StatementEdit onClose={handleCloseModal}/>}
+                    {location.includes(PATH_STATEMENT_EDIT) && <StatementEdit isOpen={isModalOpen}
+                                                                              onClose={handleCloseModal}
+                                                                              data={dataEdit}/>}
                     <TablePagination/>
                 </>
             )}

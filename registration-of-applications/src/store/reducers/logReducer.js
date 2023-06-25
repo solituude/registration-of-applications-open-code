@@ -6,8 +6,9 @@ const initialState = {
     pageSize: 15,
     currentPage: 1,
     totalPages: 0,
-    tableData: [],
+    tableData: data,
     currentData: [],
+    currentApplication: {},
     isFetching: true,
 }
 
@@ -27,10 +28,15 @@ const logReducer = createSlice({
                 currentData: action.payload,
             }
         },
+        setCurrentApplication(state, action){
+            return{
+                ...state,
+                currentApplication: action.payload,
+            }
+        },
         setTableData(state, action){
             return{
                 ...state,
-                isFetching: false,
                 tableData: action.payload,
             }
         },
@@ -56,17 +62,29 @@ const logReducer = createSlice({
 });
 
 export const { setCurrentPage, setIsFetching,
-    setTableData, setCountRows, setTotalPages, setCurrentData } = logReducer.actions;
+    setTableData, setCountRows, setTotalPages,
+    setCurrentData, setCurrentApplication } = logReducer.actions;
 
 export const fetchTableDataAsync = () => async (dispatch) => {
     dispatch(setIsFetching(true));
     try {
         dispatch(setTableData(data));
-        dispatch(setCountRows(data.length));
-        dispatch(setTotalPages(data.length / initialState.pageSize));
     } catch (error) {
         console.log(error.message);
     } finally {
+        dispatch(setIsFetching(false));
+    }
+}
+
+
+export const fetchCurrentApplication = (currID) => async (dispatch) => {
+    dispatch(setIsFetching(true));
+    try{
+        let item = initialState.tableData.find(i => currID.toString() === i.id.toString());
+        dispatch(setCurrentApplication(item));
+    } catch (error) {
+        console.log(error.message);
+    }finally {
         dispatch(setIsFetching(false));
     }
 }
